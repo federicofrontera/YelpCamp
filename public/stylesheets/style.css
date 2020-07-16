@@ -1,0 +1,38 @@
+/*body {
+    padding: 50px;
+    font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+}
+
+a {
+    color: #00B7FF;
+}*/
+
+/*
+img {
+    border: 1px solid #ddd; !* Gray border *!
+    border-radius: 4px; !* Rounded border *!
+    padding: 5px; !* Some padding *!
+    width: 150px; !* Set a small width *!
+}
+
+!* Add a hover effect (blue shadow) *!
+img:hover {
+    box-shadow: 0 0 2px 1px rgba(0, 140, 186, 0.5);
+}*/
+
+.campForm{
+    width: 30%;
+    margin: 25px auto;
+}
+
+h1 {
+    text-align: center;
+}
+
+.thumbnail img{
+    width: 100%;
+}
+
+.thumbnail{
+    padding: 0px;
+}
