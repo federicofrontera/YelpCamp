@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const Campground = require('../models/campground');
+const isLoggedIn = require('../public/javascripts/middleware/isLoggedIn')
 
 
 /* GET campgrounds page. */
@@ -8,21 +9,20 @@ router.get('/', function (req, res, next) {
     Campground.find({}, function (err, campgrounds) {
         err ? console.log(err) : res.render('campgrounds/campgrounds', {
             title: 'Campgrounds',
-            campgrounds: campgrounds,
-            currentUser : req.user
+            campgrounds: campgrounds
         });
     })
 });
 
 
-/* GET new campground page. */
-router.get('/new', function (req, res, next) {
+/* GET new campground form. */
+router.get('/new', isLoggedIn, function (req, res, next) {
     res.render('campgrounds/new', {title: 'New Campground'});
 });
 
 
-/* POST campgrounds page. */
-router.post('/', function (req, res, next) {
+/* POST new campground. */
+router.post('/', isLoggedIn, function (req, res, next) {
     let name = req.body.name;
     let image = req.body.image;
     let desc = req.body.description;

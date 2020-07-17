@@ -20,7 +20,7 @@ var campgrounds = [
 ]
 
 
-function seedDB() {
+/*function seedDB() {
     //remove all campgrounds
     Campground.deleteMany({}, function (err) {
         if (err) {
@@ -52,8 +52,27 @@ function seedDB() {
             })
         }
     })
+}*/
 
-
+function seedDB() {
+    Campground.deleteMany({}, function (err) {
+        if (err) {
+            console.log(err);
+        } else {
+            console.log("Remove campgrounds");
+            //add demo campgrounds
+            campgrounds.forEach(function (seed) {
+                Campground.create(seed, function (err, savedCampground) {
+                    if (err) {
+                        console.log(err);
+                    } else {
+                        console.log("Added a campground: " + savedCampground.name);
+                    }
+                })
+            })
+        }
+    })
 }
+
 
 module.exports = seedDB;

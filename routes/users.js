@@ -8,7 +8,12 @@ const passport = require("passport");
 
 /* GET users listing. */
 router.get('/', function (req, res, next) {
-    res.send('respond with a resource');
+    User.find({}, function (err, users) {
+        err ? console.log(err) : res.render('users/list', {
+            title: 'User List',
+            users: users
+        });
+    })
 });
 
 /*AUTH ROUTES*/

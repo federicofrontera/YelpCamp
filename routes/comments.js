@@ -2,8 +2,7 @@ const express = require('express');
 const router = express.Router({mergeParams: true});
 const Comment = require('../models/comment');
 const Campground = require('../models/campground')
-
-
+const isLoggedIn = require('../public/javascripts/middleware/isLoggedIn')
 
 /* NEW COMMENT FORM */
 router.get('/new', isLoggedIn, function (req, res) {
@@ -29,24 +28,17 @@ router.post("/", isLoggedIn, function (req, res) {
                 if (err) {
                     console.log(err);
                 } else {
+                    comment.author.id = req.user._id;
+                    comment.author.username = req.user.username;
+                    comment.save();
                     campground.comments.push(comment);
                     campground.save();
+                    console.log(comment);
                     res.redirect('/campgrounds/' + campground._id);
                 }
             });
         }
     });
 });
-
-//auth middleware
-function isLoggedIn(req, res, next){
-    if(req.isAuthenticated()){
-        return next();
-    }
-    else{
-        res.redirect('/users/login');
-    }
-};
-
 
 module.exports = router;
