@@ -2,11 +2,11 @@ const express = require('express');
 const router = express.Router();
 const Comment = require('../models/comment');
 const Campground = require('../models/campground')
-const bodyParser = require('body-parser');
-router.use(bodyParser.urlencoded({extended: true}));
+
+
 
 /* NEW COMMENT FORM */
-router.get('/campgrounds/:id/comments/new', function (req, res) {
+router.get('/campgrounds/:id/comments/new', isLoggedIn, function (req, res) {
     Campground.findById(req.params.id, function (err, campground) {
         if (err) {
             console.log(err);
@@ -18,7 +18,7 @@ router.get('/campgrounds/:id/comments/new', function (req, res) {
 });
 
 /* POST NEW COMMENT */
-router.post("/campgrounds/:id/comments", function (req, res) {
+router.post("/campgrounds/:id/comments", isLoggedIn, function (req, res) {
     //lookup campground using ID
     Campground.findById(req.params.id, function (err, campground) {
         if (err) {
@@ -37,5 +37,16 @@ router.post("/campgrounds/:id/comments", function (req, res) {
         }
     });
 });
+
+//auth middleware
+function isLoggedIn(req, res, next){
+    if(req.isAuthenticated()){
+        return next();
+    }
+    else{
+        res.redirect('/users/login');
+    }
+};
+
 
 module.exports = router;

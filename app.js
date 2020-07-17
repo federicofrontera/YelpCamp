@@ -7,7 +7,8 @@ const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const seedDB = require("./seeds");
 const passport = require('passport');
-const LocalStrategy = require('passport-local');
+
+const User = require('./models/user');
 
 //routers setup
 const indexRouter = require('./routes/index');
@@ -21,6 +22,17 @@ const app = express();
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
+//auth configuration
+app.use(require('express-session')({
+    secret: "michi y freya best cats LAS",
+    resave: false,
+    saveUninitialized: false
+}))
+app.use(passport.initialize());
+app.use(passport.session());
+
+
+//app config
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
