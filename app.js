@@ -7,8 +7,13 @@ const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const seedDB = require("./seeds");
 const passport = require('passport');
-
+const LocalStrategy = require('passport-local');
 const User = require('./models/user');
+passport.use(new LocalStrategy(User.authenticate()));
+passport.serializeUser(User.serializeUser());
+passport.deserializeUser(User.deserializeUser());
+
+
 
 //routers setup
 const indexRouter = require('./routes/index');
@@ -40,10 +45,14 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, '/public')));
 app.use(bodyParser.urlencoded({extended: true}));
 
+app.use(function(req, res, next){
+    res.locals.currentUser = req.user;
+    next();
+});
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/campgrounds', campgroundsRouter);
-app.use('/', commentsRouter);
+app.use('/campgrounds/:id/comments', commentsRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
