@@ -5,8 +5,12 @@ const Campground = require('../models/campground');
 
 /* GET campgrounds page. */
 router.get('/', function (req, res, next) {
-    Campground.find({}, function (err,campgrounds) {
-        err ? console.log(err) : res.render('campgrounds/campgrounds', {title: 'Campgrounds', campgrounds: campgrounds});
+    Campground.find({}, function (err, campgrounds) {
+        err ? console.log(err) : res.render('campgrounds/campgrounds', {
+            title: 'Campgrounds',
+            campgrounds: campgrounds,
+            currentUser : req.user
+        });
     })
 });
 
@@ -32,11 +36,10 @@ router.post('/', function (req, res, next) {
 /* SHOW more info about a campground */
 router.get('/:id', function (req, res) {
     Campground.findById(req.params.id).populate("comments").exec(function (err, campground) {
-        if(err){
+        if (err) {
             console.log(err);
-        }
-        else{
-            res.render('campgrounds/show',{title: campground.name, campground:campground});
+        } else {
+            res.render('campgrounds/show', {title: campground.name, campground: campground});
         }
     })
 })
