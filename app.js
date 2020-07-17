@@ -6,6 +6,8 @@ const logger = require('morgan');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const seedDB = require("./seeds");
+const passport = require('passport');
+const LocalStrategy = require('passport-local');
 
 //routers setup
 const indexRouter = require('./routes/index');
