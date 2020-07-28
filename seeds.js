@@ -1,11 +1,22 @@
 const mongoose = require('mongoose');
 const Campground = require('./models/campground');
 const Comment = require('./models/comment');
-var campgrounds = [
+const User = require('./models/user');
+const passport = require("passport");
+
+async function seedUser() {
+    const username = {username: 'test user'},
+        password = '123';
+    return user = await User.register(username, password);
+
+}
+
+
+const campgrounds = [
     {
         name: "Tilcara",
         image: "https://images.unsplash.com/photo-1568740700094-3aa254e34daf?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1330&q=80",
-        description: "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Consequuntur necessitatibus facere illum laudantium sed eius ipsam expedita dolores! Eligendi, officiis maiores? Nostrum facere corporis hic commodi exercitationem reiciendis quia ab modi accusamus praesentium numquam quae ipsa voluptatum, totam nobis, dolorem delectus obcaecati facilis est laboriosam dolorum! Dolorem recusandae harum deserunt consequatur, impedit cupiditate eum officia dolorum soluta illo tempore, nemo possimus magni, id repellendus fuga consectetur sunt. Quod aliquam sint, doloribus reprehenderit exercitationem est modi animi ullam quae. Eos suscipit aperiam odio quae nam, veniam esse voluptate sapiente voluptatibus? Eum, consequuntur modi nobis vitae ab velit. Culpa totam ad soluta quis dolor non aperiam assumenda cum eaque. Reiciendis officia iure quibusdam, quo voluptatum vero quos vitae enim laudantium! Temporibus illum illo exercitationem accusamus, dicta, sapiente, corrupti nemo est non assumenda eligendi sint molestiae tempore obcaecati dolores porro fugit repellat deserunt magnam modi quod. Maiores amet vitae a labore hic laborum repellendus eos, quae voluptate consectetur fugiat, deserunt recusandae, tempore quisquam id incidunt autem porro esse? Similique deleniti possimus deserunt necessitatibus reprehenderit provident explicabo sit laudantium natus delectus, ipsam accusamus voluptatum aut quis, fugiat id minus! Quod, id impedit recusandae, nobis eligendi veniam nulla vel repellat fugiat, quo qui? Natus, exercitationem!"
+        description: "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Consequuntur necessitatibus facere illum laudantium sed eius ipsam expedita dolores! Eligendi, officiis maiores? Nostrum facere corporis hic commodi exercitationem reiciendis quia ab modi accusamus praesentium numquam quae ipsa voluptatum, totam nobis, dolorem delectus obcaecati facilis est laboriosam dolorum! Dolorem recusandae harum deserunt consequatur, impedit cupiditate eum officia dolorum soluta illo tempore, nemo possimus magni, id repellendus fuga consectetur sunt. Quod aliquam sint, doloribus reprehenderit exercitationem est modi animi ullam quae. Eos suscipit aperiam odio quae nam, veniam esse voluptate sapiente voluptatibus? Eum, consequuntur modi nobis vitae ab velit. Culpa totam ad soluta quis dolor non aperiam assumenda cum eaque. Reiciendis officia iure quibusdam, quo voluptatum vero quos vitae enim laudantium! Temporibus illum illo exercitationem accusamus, dicta, sapiente, corrupti nemo est non assumenda eligendi sint molestiae tempore obcaecati dolores porro fugit repellat deserunt magnam modi quod. Maiores amet vitae a labore hic laborum repellendus eos, quae voluptate consectetur fugiat, deserunt recusandae, tempore quisquam id incidunt autem porro esse? Similique deleniti possimus deserunt necessitatibus reprehenderit provident explicabo sit laudantium natus delectus, ipsam accusamus voluptatum aut quis, fugiat id minus! Quod, id impedit recusandae, nobis eligendi veniam nulla vel repellat fugiat, quo qui? Natus, exercitationem!",
     },
     {
         name: "Iguazu",
@@ -54,7 +65,10 @@ var campgrounds = [
     })
 }*/
 
-function seedDB() {
+async function seedDB() {
+
+    let user = await seedUser();
+    console.log(user);
     Campground.deleteMany({}, function (err) {
         if (err) {
             console.log(err);
@@ -70,6 +84,13 @@ function seedDB() {
                     }
                 })
             })
+        }
+    })
+    Comment.deleteMany({}, function (err) {
+        if (err) {
+            console.log(err);
+        } else {
+            console.log("Remove comments");
         }
     })
 }
