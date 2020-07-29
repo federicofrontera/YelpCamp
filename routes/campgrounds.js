@@ -21,7 +21,7 @@ router.get('/new', isLoggedIn, function (req, res, next) {
 });
 
 
-/* POST new campground. */
+/* POST new campground . */
 router.post('/', isLoggedIn, function (req, res, next) {
     let name = req.body.name;
     let image = req.body.image;
@@ -42,7 +42,7 @@ router.post('/', isLoggedIn, function (req, res, next) {
     });
 });
 
-/* SHOW more info about a campground */
+/* SHOW campground route */
 router.get('/:id', function (req, res) {
     Campground.findById(req.params.id).populate("comments").exec(function (err, campground) {
         if (err) {
@@ -53,4 +53,28 @@ router.get('/:id', function (req, res) {
     })
 })
 
+/*EDIT campground route*/
+router.get('/:id/edit', function (req, res) {
+    Campground.findById(req.params.id,function (err, campground) {
+        if (err) {
+            console.log(err);
+            res.redirect('/campgrounds');
+        } else {
+            res.render('campgrounds/edit', {title: campground.name + " edit", campground: campground});
+        }
+    })
+})
+
+/*UPDATE campground route*/
+router.put('/:id', function (req, res) {
+    Campground.findByIdAndUpdate(req.params.id, req.body.campground, function (err, updatedCampground) {
+        if(err){
+            console.log(err);
+            res.redirect('/campgrounds');
+        }
+        else{
+            res.redirect('/campgrounds/' + req.params.id);
+        }
+    })
+})
 module.exports = router;

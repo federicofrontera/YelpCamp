@@ -31,8 +31,10 @@ h1 {
 
 .thumbnail img{
     width: 100%;
+    height: 65%
 }
 
 .thumbnail{
     padding: 0px;
+    height: 300px;
 }

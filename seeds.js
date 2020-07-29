@@ -5,10 +5,16 @@ const User = require('./models/user');
 const passport = require("passport");
 
 async function seedUser() {
+/*    User.deleteMany({}, function () {
+
+    });*/
     const username = {username: 'test user'},
         password = '123';
-    return user = await User.register(username, password);
 
+    return user = User.register(username, password)
+        .catch(function () {
+            return User.findOne(username).exec();
+        });
 }
 
 
@@ -30,69 +36,66 @@ const campgrounds = [
     }
 ]
 
+/*async function seedUser2() {
+    const seedUsername = {username: 'test user'},
+        seedPassword = {password: '123'},
+        options = {new: true, upsert: true, setDefaultsOnInsert: true};
+    let seededUser;
 
-/*function seedDB() {
-    //remove all campgrounds
-    Campground.deleteMany({}, function (err) {
-        if (err) {
-            console.log(err);
-        } else {
-            console.log("Remove campgrounds");
-            //add demo campgrounds
-            campgrounds.forEach(function (seed) {
-                Campground.create(seed, function (err, savedCampground) {
-                    if (err) {
-                        console.log(err);
-                    } else {
-                        //add demo comment
-                        Comment.create({text: "Test comment added by seed function",
-                                        author: "Me"},
-                            function (err, savedComment) {
-                            if(err){
-                                console.log(err);
-                            }
-                            else{
-                                savedCampground.comments.push(savedComment);
-                                savedCampground.save();
-                                console.log("New comment added");
-                            }
-                        });
-                        console.log("Added a campground: " + savedCampground.name);
-                    }
-                });
-            })
-        }
-    })
+    return seededUser = await User.findOneAndUpdate(seedUsername, seedPassword, options,
+        function (err, result) {
+            if(!err){
+                seededUser = result; //I want seedUser() to return this value
+            }
+        });
 }*/
 
 async function seedDB() {
 
-    let user = await seedUser();
-    console.log(user);
+    let user = await seedUser()
+    console.log('Register ' + user.username);
     Campground.deleteMany({}, function (err) {
         if (err) {
             console.log(err);
         } else {
             console.log("Remove campgrounds");
+            //remove comments
+            Comment.deleteMany({}, function (err) {
+                if (err) {
+                    console.log(err);
+                } else {
+                    console.log("Remove comments");
+                }
+            })
             //add demo campgrounds
             campgrounds.forEach(function (seed) {
                 Campground.create(seed, function (err, savedCampground) {
                     if (err) {
                         console.log(err);
                     } else {
-                        console.log("Added a campground: " + savedCampground.name);
+                        savedCampground.author = user;
+                        //add demo comment
+                        Comment.create({
+                            text: "Test comment added by seed function",
+                            author: user
+                        }, function (err, savedComment) {
+                            if (err) {
+                                console.log(err);
+                            } else {
+                                savedCampground.comments.push(savedComment);
+                                savedCampground.save();
+                                console.log("Added a campground: " + savedCampground.name +
+                                    " - added by: " + savedCampground.author.username);
+                            }
+                        })
+
                     }
                 })
             })
+
         }
     })
-    Comment.deleteMany({}, function (err) {
-        if (err) {
-            console.log(err);
-        } else {
-            console.log("Remove comments");
-        }
-    })
+
 }
 
 

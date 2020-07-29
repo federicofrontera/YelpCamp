@@ -3,6 +3,7 @@ const express = require('express');
 const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
+const methodOverride = require('method-override');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const seedDB = require("./seeds");
@@ -44,6 +45,8 @@ app.use(express.urlencoded({extended: true}));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, '/public')));
 app.use(bodyParser.urlencoded({extended: true}));
+app.use(methodOverride("_method"));
+
 
 app.use(function(req, res, next){
     res.locals.currentUser = req.user;
@@ -71,7 +74,8 @@ app.use(function (err, req, res, next) {
 });
 
 
-
+//mongoose config
+mongoose.set('useFindAndModify', false);
 //db connection
 mongoose.connect('mongodb://localhost:27017/yelpcamp', {
     useNewUrlParser: true,
