@@ -5,7 +5,8 @@ const isLoggedIn = require('../public/javascripts/middleware/isLoggedIn');
 const checkCampgroundOwnership = require('../public/javascripts/middleware/checkCampgroundOwnership');
 
 
-/* GET campgrounds page. */
+
+/* INDEX - show all campgrounds. */
 router.get('/', function (req, res, next) {
     Campground.find({}, function (err, campgrounds) {
         err ? console.log(err) : res.render('campgrounds/campgrounds', {
@@ -15,26 +16,7 @@ router.get('/', function (req, res, next) {
     })
 });
 
-/* SHOW campground route */
-router.get('/:id', function (req, res) {
-    Campground.findById(req.params.id).populate("comments").exec(function (err, campground) {
-        if (err || !campground) {
-            console.log(err);
-            res.redirect('back');
-        } else {
-            res.render('campgrounds/show', {title: campground.name, campground: campground});
-        }
-    })
-})
-
-
-/* GET new campground form. */
-router.get('/new', isLoggedIn, function (req, res, next) {
-    res.render('campgrounds/new', {title: 'New Campground'});
-});
-
-
-/* POST new campground . */
+/* CREATE - new campground . */
 router.post('/', isLoggedIn, function (req, res, next) {
     let name = req.body.name;
     let image = req.body.image;
@@ -54,6 +36,25 @@ router.post('/', isLoggedIn, function (req, res, next) {
     });
 });
 
+
+/* NEW - show new campground form. */
+router.get('/new', isLoggedIn, function (req, res, next) {
+    console.log('HIIII IM HEREEEEEEEEEEEEEEE');
+    res.render('campgrounds/new');
+});
+
+/* SHOW campground route */
+router.get('/:id', function (req, res) {
+    Campground.findById(req.params.id).populate("comments").exec(function (err, campground) {
+        if (err) {
+            console.log(err);
+            console.log('AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA')
+            res.redirect('back');
+        } else {
+            res.render('campgrounds/show', {campground: campground});
+        }
+    })
+})
 
 
 /*EDIT campground form route*/
@@ -94,5 +95,6 @@ router.delete('/:id', checkCampgroundOwnership, function (req, res) {
         })
     });
 })
+
 
 module.exports = router;
