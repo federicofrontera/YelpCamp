@@ -8,8 +8,9 @@ const checkCommentOwnership = require('../public/javascripts/middleware/checkCom
 /* NEW COMMENT FORM */
 router.get('/new', isLoggedIn, function (req, res) {
     Campground.findById(req.params.id, function (err, campground) {
-        if (err) {
-            console.log(err);
+        if (err || !campground) {
+            req.flash('error', 'Campground not found');
+            res.redirect('back');
         } else {
             res.render('comments/new', {title: 'New Comment', campground: campground});
         }
@@ -20,8 +21,8 @@ router.get('/new', isLoggedIn, function (req, res) {
 router.post("/", isLoggedIn, function (req, res) {
     //lookup campground using ID
     Campground.findById(req.params.id, function (err, campground) {
-        if (err) {
-            console.log(err);
+        if (err || !campground) {
+            req.flash('error', 'Campground not found')
             res.redirect("/campgrounds");
         } else {
             Comment.create(req.body.comment, function (err, comment) {

@@ -3,8 +3,8 @@ const Campground = require('../../../models/comment');
 module.exports = function checkCampgroundOwnership(req, res, next) {
     if (req.isAuthenticated()) {
         Campground.findById(req.params.comment_id, function (err, comment) {
-            if (err) {
-                console.log(err);
+            if (err || !comment) {
+                req.flash('error', 'Comment not found');
                 res.redirect('back');
             } else if (comment.author._id.equals(req.user._id)) {
                 next()

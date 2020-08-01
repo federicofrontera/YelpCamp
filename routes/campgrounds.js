@@ -15,6 +15,18 @@ router.get('/', function (req, res, next) {
     })
 });
 
+/* SHOW campground route */
+router.get('/:id', function (req, res) {
+    Campground.findById(req.params.id).populate("comments").exec(function (err, campground) {
+        if (err || !campground) {
+            console.log(err);
+            res.redirect('back');
+        } else {
+            res.render('campgrounds/show', {title: campground.name, campground: campground});
+        }
+    })
+})
+
 
 /* GET new campground form. */
 router.get('/new', isLoggedIn, function (req, res, next) {
@@ -42,16 +54,7 @@ router.post('/', isLoggedIn, function (req, res, next) {
     });
 });
 
-/* SHOW campground route */
-router.get('/:id', function (req, res) {
-    Campground.findById(req.params.id).populate("comments").exec(function (err, campground) {
-        if (err) {
-            console.log(err);
-        } else {
-            res.render('campgrounds/show', {title: campground.name, campground: campground});
-        }
-    })
-})
+
 
 /*EDIT campground form route*/
 router.get('/:id/edit', checkCampgroundOwnership, function (req, res) {
