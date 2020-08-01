@@ -1,7 +1,8 @@
 const express = require('express');
 const router = express.Router();
 const Campground = require('../models/campground');
-const isLoggedIn = require('../public/javascripts/middleware/isLoggedIn')
+const isLoggedIn = require('../public/javascripts/middleware/isLoggedIn');
+const checkCampgroundOwnership = require('../public/javascripts/middleware/checkCampgroundOwnership');
 
 
 /* GET campgrounds page. */
@@ -32,10 +33,9 @@ router.post('/', isLoggedIn, function (req, res, next) {
     }
     let newCampground = {name: name, image: image, description: desc, author: author};
     Campground.create(newCampground, function (err, savedCampground) {
-        if(err){
+        if (err) {
             console.log(err);
-        }
-        else{
+        } else {
             console.log(savedCampground)
             res.redirect('/campgrounds');
         }
@@ -53,28 +53,43 @@ router.get('/:id', function (req, res) {
     })
 })
 
-/*EDIT campground route*/
-router.get('/:id/edit', function (req, res) {
-    Campground.findById(req.params.id,function (err, campground) {
+/*EDIT campground form route*/
+router.get('/:id/edit', checkCampgroundOwnership, function (req, res) {
+    Campground.findById(req.params.id, function (err, campground) {
         if (err) {
             console.log(err);
             res.redirect('/campgrounds');
         } else {
             res.render('campgrounds/edit', {title: campground.name + " edit", campground: campground});
+
         }
     })
-})
+});
+
 
 /*UPDATE campground route*/
-router.put('/:id', function (req, res) {
+router.put('/:id', checkCampgroundOwnership, function (req, res) {
     Campground.findByIdAndUpdate(req.params.id, req.body.campground, function (err, updatedCampground) {
-        if(err){
+        if (err) {
             console.log(err);
             res.redirect('/campgrounds');
-        }
-        else{
+        } else {
             res.redirect('/campgrounds/' + req.params.id);
         }
     })
 })
+
+/*DESTROY campground route*/
+router.delete('/:id', checkCampgroundOwnership, function (req, res) {
+    Campground.findById(req.params.id, function (err, foundCampground) {
+        foundCampground.remove(function (err) {
+            if (err) {
+                res.redirect('/campgrounds');
+            } else {
+                res.redirect('/campgrounds');
+            }
+        })
+    });
+})
+
 module.exports = router;

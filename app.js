@@ -10,10 +10,10 @@ const seedDB = require("./seeds");
 const passport = require('passport');
 const LocalStrategy = require('passport-local');
 const User = require('./models/user');
+const flash = require('connect-flash');
 passport.use(new LocalStrategy(User.authenticate()));
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
-
 
 
 //routers setup
@@ -28,15 +28,6 @@ const app = express();
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
-//auth configuration
-app.use(require('express-session')({
-    secret: "michi y freya best cats LAS",
-    resave: false,
-    saveUninitialized: false
-}))
-app.use(passport.initialize());
-app.use(passport.session());
-
 
 //app config
 app.use(logger('dev'));
@@ -46,16 +37,36 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, '/public')));
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(methodOverride("_method"));
+app.use(flash());
 
 
-app.use(function(req, res, next){
+
+//auth configuration
+app.use(require('express-session')({
+    secret: "michi y freya best cats LAS",
+    resave: false,
+    saveUninitialized: false
+}))
+app.use(passport.initialize());
+app.use(passport.session());
+
+//middleware
+app.use(function (req, res, next) {
     res.locals.currentUser = req.user;
+    res.locals.error = req.flash('error');
+    res.locals.success = req.flash('success');
+
     next();
 });
+
+
+
+//router config
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/campgrounds', campgroundsRouter);
 app.use('/campgrounds/:id/comments', commentsRouter);
+
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
@@ -85,7 +96,6 @@ mongoose.connect('mongodb://localhost:27017/yelpcamp', {
     .catch(error => console.log(error.message));
 //reseed DB
 seedDB();
-
 
 
 module.exports = app;

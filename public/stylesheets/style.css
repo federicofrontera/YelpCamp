@@ -34,7 +34,15 @@ h1 {
     height: 65%
 }
 
-.thumbnail{
+.index-thumbnail{
     padding: 0px;
     height: 300px;
+}
+
+.thumbnail{
+    padding: 0px;
+}
+
+.delete-form {
+    display: inline;
 }
