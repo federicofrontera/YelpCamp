@@ -95,14 +95,16 @@ mongoose.set('useFindAndModify', false);
     .then(() => console.log('Connected to DB!'))
     .catch(error => console.log(error.message));*/
 //for heroku
-mongoose.connect("mongodb+srv://dbuser:F7vSAcZGRQWQD67P@cluster0.9qras.mongodb.net/yelpcamp?retryWrites=true&w=majority", {
+mongoose.connect(process.env.DATABASEURL, {
     useNewUrlParser: true,
     useUnifiedTopology: true
 })
+
     .then(() => console.log('Connected to DB!'))
     .catch(error => console.log(error.message));
 //reseed DB
 seedDB();
 
-
+console.log(process.env.DATABASEURL);
+console.log(process.env.PORT);
 module.exports = app;
