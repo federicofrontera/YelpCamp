@@ -11,6 +11,7 @@ const passport = require('passport');
 const LocalStrategy = require('passport-local');
 const User = require('./models/user');
 const flash = require('connect-flash');
+require('dotenv').config();
 passport.use(new LocalStrategy(User.authenticate()));
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
@@ -88,23 +89,15 @@ app.use(function (err, req, res, next) {
 //mongoose config
 mongoose.set('useFindAndModify', false);
 //db connection
-/*mongoose.connect('mongodb://localhost:27017/yelpcamp', {
-    useNewUrlParser: true,
-    useUnifiedTopology: true
-})
-    .then(() => console.log('Connected to DB!'))
-    .catch(error => console.log(error.message));*/
-//for heroku
 mongoose.connect(process.env.DATABASEURL, {
     useNewUrlParser: true,
     useUnifiedTopology: true
 })
-
     .then(() => console.log('Connected to DB!'))
     .catch(error => console.log(error.message));
+
 //reseed DB
 seedDB();
 
-console.log(process.env.DATABASEURL);
-console.log(process.env.PORT);
 module.exports = app;
+
