@@ -88,7 +88,14 @@ app.use(function (err, req, res, next) {
 //mongoose config
 mongoose.set('useFindAndModify', false);
 //db connection
-mongoose.connect('mongodb://localhost:27017/yelpcamp', {
+/*mongoose.connect('mongodb://localhost:27017/yelpcamp', {
+    useNewUrlParser: true,
+    useUnifiedTopology: true
+})
+    .then(() => console.log('Connected to DB!'))
+    .catch(error => console.log(error.message));*/
+//for heroku
+mongoose.connect("mongodb+srv://dbuser:F7vSAcZGRQWQD67P@cluster0.9qras.mongodb.net/yelpcamp?retryWrites=true&w=majority", {
     useNewUrlParser: true,
     useUnifiedTopology: true
 })
