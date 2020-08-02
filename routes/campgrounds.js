@@ -22,7 +22,7 @@ router.post('/', isLoggedIn, function (req, res, next) {
     let image = req.body.image;
     let desc = req.body.description;
     let author = {
-        id: req.user._id,
+        _id: req.user._id,
         username: req.user.username
     }
     let newCampground = {name: name, image: image, description: desc, author: author};
