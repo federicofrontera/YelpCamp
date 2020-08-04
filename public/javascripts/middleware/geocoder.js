@@ -12,7 +12,7 @@ module.exports = {
             .send()
             .then(response => {
                 const match = response.body;
-                req.body.coordinates = match.features[0].geometry.coordinates;
+                req.body.campground.coordinates = match.features[0].geometry.coordinates;
                 next();
             })
             .catch(error => {

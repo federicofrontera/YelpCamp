@@ -22,12 +22,8 @@ router.post('/', [isLoggedIn, geocoder.forward], function (req, res, next) {
         _id: req.user._id,
         username: req.user.username
     }
-    let newCampground = {name: req.body.name,
-        image: req.body.image,
-        description: req.body.description,
-        author: author,
-        price: req.body.price,
-        coordinates: req.body.coordinates};
+    let newCampground = req.body.campground;
+    newCampground.author = author;
     Campground.create(newCampground, function (err, savedCampground) {
         if (err) {
             console.log(err);
@@ -65,7 +61,6 @@ router.get('/:id/edit', checkCampgroundOwnership, function (req, res) {
             res.redirect('/campgrounds');
         } else {
             res.render('campgrounds/edit', {title: campground.name + " edit", campground: campground});
-
         }
     })
 });
@@ -74,8 +69,7 @@ router.get('/:id/edit', checkCampgroundOwnership, function (req, res) {
 /*UPDATE campground route*/
 router.put('/:id', [checkCampgroundOwnership, geocoder.forward], function (req, res) {
     const updatedCampground = req.body.campground;
-    updatedCampground.coordinates = req.body.coordinates;
-    Campground.findByIdAndUpdate(req.params.id, updatedCampground, function (err) {
+        Campground.findByIdAndUpdate(req.params.id, updatedCampground, function (err) {
         if (err) {
             console.log(err);
             res.redirect('/campgrounds');
