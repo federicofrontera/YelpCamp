@@ -24,7 +24,7 @@
             <img class="img-responsive" src="<%= campground.image %>" alt="campground.name">
             <div class="caption">
                 <h4 class="pull-right">$<%= campground.price %>/night</h4>
-                <h4><a href="">Welcome to <%= campground.name %></a></h4>
+                <h4><a href="">Welcome to <span id="campground-name"><%= campground.name %></span></a></h4>
                 <p>
                     <%= campground.description %>
                 </p>
@@ -75,31 +75,5 @@
 
 <a href="/campgrounds">Campgrounds index</a>
 
-<script>
-    const campground = <%- JSON.stringify(campground) %>
-    mapboxgl.accessToken = 'pk.eyJ1Ijoib2tvbmRvciIsImEiOiJja2RnMmhrYmcyZHc4MnFwbTI5OXljdzBsIn0.FvyZoJXrxisObGhcQYpg6A';
-
-    var map = new mapboxgl.Map({
-        container: 'map',
-        style: 'mapbox://styles/mapbox/light-v10',
-        center:  campground.coordinates,
-        zoom: 10
-    });
-
-    // add markers to map
-
-        // create a HTML element for each feature
-        var el = document.createElement('div');
-        el.className = 'marker';
-
-        // make a marker for each feature and add to the map
-        new mapboxgl.Marker(el)
-            .setLngLat(campground.coordinates)
-            .setPopup(new mapboxgl.Popup({ offset: 25 }) // add popups
-                .setHTML('<h3>' + campground.name + '</h3><p>' + campground.coordinates + '</p>'))
-            .addTo(map);
-
-
-
-</script>
+<script src="/javascripts/scripts/populateMap.js"></script>
 <%- include("../partials/footer") %>
