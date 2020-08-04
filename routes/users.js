@@ -20,7 +20,7 @@ router.get('/', function (req, res, next) {
 
 //register
 router.get('/register', function (req, res, next) {
-    res.render('users/register', {title: 'Signup'});
+    res.render('users/register', {page: 'register'});
 });
 
 //signup
@@ -32,13 +32,14 @@ router.post('/register', function (req, res, next) {
             return res.render("users/register", {"error": err.message});
         }
         passport.authenticate('local')(req, res, function () {
+            req.flash("success", "Successfully Signed Up! Welcome " + req.body.username);
             res.redirect('/campgrounds');
         })
     });
 });
 //login form
 router.get('/login', function (req, res) {
-    res.render('users/login', {title: 'Login'});
+    res.render('users/login', {page: 'login'});
 });
 //login
 router.post('/login', passport.authenticate('local', {

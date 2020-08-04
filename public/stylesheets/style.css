@@ -1,24 +1,17 @@
-/*body {
-    padding: 50px;
+body {
+    padding: 0;
     font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
 }
 
 a {
     color: #00B7FF;
-}*/
-
-/*
-img {
-    border: 1px solid #ddd; !* Gray border *!
-    border-radius: 4px; !* Rounded border *!
-    padding: 5px; !* Some padding *!
-    width: 150px; !* Set a small width *!
 }
 
-!* Add a hover effect (blue shadow) *!
-img:hover {
+
+/* Add a hover effect (blue shadow) */
+.index-thumbnail img:hover {
     box-shadow: 0 0 2px 1px rgba(0, 140, 186, 0.5);
-}*/
+}
 
 .campForm{
     width: 30%;
@@ -29,9 +22,14 @@ h1 {
     text-align: center;
 }
 
+.thumbnail{
+    padding: 0px;
+}
+
 .thumbnail img{
     width: 100%;
-    height: 65%
+    height: 65%;
+    max-height: 720px;
 }
 
 .index-thumbnail{
@@ -39,10 +37,39 @@ h1 {
     height: 300px;
 }
 
-.thumbnail{
-    padding: 0px;
+.index-thumbnail img {
+    border: 1px solid #ddd; /* Gray border */
+    border-radius: 4px; /* Rounded border */
+    padding: 1px; /* Some padding */
+    width: 100%; /* Set a small width */
 }
+
 
 .delete-form {
     display: inline;
+}
+
+#map {
+    top: 0;
+    bottom: 0;
+    width: 100%;
+    height: 250px;
+}
+
+.marker {
+    background-image: url('/images/mapbox-icon.png');
+    background-size: cover;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+.mapboxgl-popup {
+    max-width: 200px;
+}
+
+.mapboxgl-popup-content {
+    text-align: center;
+    font-family: 'Open Sans', sans-serif;
 }

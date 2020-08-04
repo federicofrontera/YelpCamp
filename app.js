@@ -1,3 +1,4 @@
+require('dotenv').config();
 const createError = require('http-errors');
 const express = require('express');
 const path = require('path');
@@ -11,7 +12,8 @@ const passport = require('passport');
 const LocalStrategy = require('passport-local');
 const User = require('./models/user');
 const flash = require('connect-flash');
-require('dotenv').config();
+
+
 passport.use(new LocalStrategy(User.authenticate()));
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
@@ -98,6 +100,8 @@ mongoose.connect(process.env.DATABASEURL, {
 
 //reseed DB
 seedDB();
+
+
 
 module.exports = app;
 

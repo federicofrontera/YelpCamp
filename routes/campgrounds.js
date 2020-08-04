@@ -2,30 +2,32 @@ const express = require('express');
 const router = express.Router();
 const Campground = require('../models/campground');
 const isLoggedIn = require('../public/javascripts/middleware/isLoggedIn');
+const geocoder = require('../public/javascripts/middleware/geocoder')
 const checkCampgroundOwnership = require('../public/javascripts/middleware/checkCampgroundOwnership');
-
 
 
 /* INDEX - show all campgrounds. */
 router.get('/', function (req, res, next) {
     Campground.find({}, function (err, campgrounds) {
-        err ? console.log(err) : res.render('campgrounds/campgrounds', {
-            title: 'Campgrounds',
+        err ? console.log(err) : res.render('campgrounds/index', {
+            page: 'campgrounds',
             campgrounds: campgrounds
         });
     })
 });
 
 /* CREATE - new campground . */
-router.post('/', isLoggedIn, function (req, res, next) {
-    let name = req.body.name;
-    let image = req.body.image;
-    let desc = req.body.description;
+router.post('/', [isLoggedIn, geocoder.forward], function (req, res, next) {
     let author = {
         _id: req.user._id,
         username: req.user.username
     }
-    let newCampground = {name: name, image: image, description: desc, author: author};
+    let newCampground = {name: req.body.name,
+        image: req.body.image,
+        description: req.body.description,
+        author: author,
+        price: req.body.price,
+        coordinates: req.body.coordinates};
     Campground.create(newCampground, function (err, savedCampground) {
         if (err) {
             console.log(err);
@@ -39,7 +41,6 @@ router.post('/', isLoggedIn, function (req, res, next) {
 
 /* NEW - show new campground form. */
 router.get('/new', isLoggedIn, function (req, res, next) {
-    console.log('HIIII IM HEREEEEEEEEEEEEEEE');
     res.render('campgrounds/new');
 });
 
@@ -48,7 +49,6 @@ router.get('/:id', function (req, res) {
     Campground.findById(req.params.id).populate("comments").exec(function (err, campground) {
         if (err) {
             console.log(err);
-            console.log('AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA')
             res.redirect('back');
         } else {
             res.render('campgrounds/show', {campground: campground});
@@ -72,8 +72,10 @@ router.get('/:id/edit', checkCampgroundOwnership, function (req, res) {
 
 
 /*UPDATE campground route*/
-router.put('/:id', checkCampgroundOwnership, function (req, res) {
-    Campground.findByIdAndUpdate(req.params.id, req.body.campground, function (err, updatedCampground) {
+router.put('/:id', [checkCampgroundOwnership, geocoder.forward], function (req, res) {
+    const updatedCampground = req.body.campground;
+    updatedCampground.coordinates = req.body.coordinates;
+    Campground.findByIdAndUpdate(req.params.id, updatedCampground, function (err) {
         if (err) {
             console.log(err);
             res.redirect('/campgrounds');
