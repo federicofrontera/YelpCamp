@@ -5,7 +5,7 @@
     <div class="col-md-3">
 
         <div class="thumbnail">
-            <div id='map'><%= campground.name %></div>
+            <div id='map'><%= campground.coordinates %></div>
 
             <div class="caption">
                 <p class="lead">Yelp Camp</p>
@@ -83,7 +83,7 @@
         container: 'map',
         style: 'mapbox://styles/mapbox/light-v10',
         center:  campground.coordinates,
-        zoom: 5
+        zoom: 10
     });
 
     // add markers to map

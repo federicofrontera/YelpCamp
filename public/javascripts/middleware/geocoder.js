@@ -5,8 +5,8 @@ const geocodingClient = mbxGeocoding({accessToken: process.env.MAPBOX_TOKEN});
 module.exports = {
     forward: function (req, res, next) {
         geocodingClient.forwardGeocode({
-            query: req.body.campground.name,
-            countries: [req.body.country],
+            query: req.body.campground.location,
+            countries: [req.body.campground.country],
             limit: 1
         })
             .send()
@@ -16,8 +16,9 @@ module.exports = {
                 next();
             })
             .catch(error => {
-                req.body.coordinates = [-96, 37.8];
-                console.log("Location not found, coordinates set to: " + req.body.coordinates);
+                req.body.campground.coordinates = [-96, 37.8];
+                req.flash('error', "Location not found, coordinates set to: " + req.body.campground.coordinates);
+                next();
             });;
     }
 }

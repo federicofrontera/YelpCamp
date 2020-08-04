@@ -29,7 +29,7 @@ router.post('/', [isLoggedIn, geocoder.forward], function (req, res, next) {
             console.log(err);
         } else {
             console.log(savedCampground)
-            res.redirect('/campgrounds');
+            res.redirect('/campgrounds/' + savedCampground._id);
         }
     });
 });

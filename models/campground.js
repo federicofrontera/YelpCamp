@@ -7,6 +7,8 @@ const campgroundSchema = new mongoose.Schema({
     price: String,
     image: String,
     description: String,
+    location: String,
+    country: String,
     coordinates: Array,
     author: {
         _id: {
