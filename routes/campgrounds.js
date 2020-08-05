@@ -8,12 +8,25 @@ const checkCampgroundOwnership = require('../public/javascripts/middleware/check
 
 /* INDEX - show all campgrounds. */
 router.get('/', function (req, res, next) {
-    Campground.find({}, function (err, campgrounds) {
-        err ? console.log(err) : res.render('campgrounds/index', {
-            page: 'campgrounds',
-            campgrounds: campgrounds
-        });
-    })
+    const regex = new RegExp(escapeRegex(req.query.search), 'gi');
+    Campground.find({
+        $or: [
+            {name: regex},
+            {location: regex},
+            {"author.username": regex}
+        ]
+    }, function (err, campgrounds) {
+        if (err || !campgrounds.length) {
+            req.flash('error', 'No matches for your search, please try again.');
+            res.redirect("back");
+        } else {
+            res.render('campgrounds/index', {
+                page: 'campgrounds',
+                campgrounds: campgrounds
+            })
+        }
+
+    });
 });
 
 /* CREATE - new campground . */
@@ -69,7 +82,7 @@ router.get('/:id/edit', checkCampgroundOwnership, function (req, res) {
 /*UPDATE campground route*/
 router.put('/:id', [checkCampgroundOwnership, geocoder.forward], function (req, res) {
     const updatedCampground = req.body.campground;
-        Campground.findByIdAndUpdate(req.params.id, updatedCampground, function (err) {
+    Campground.findByIdAndUpdate(req.params.id, updatedCampground, function (err) {
         if (err) {
             console.log(err);
             res.redirect('/campgrounds');
@@ -92,5 +105,8 @@ router.delete('/:id', checkCampgroundOwnership, function (req, res) {
     });
 })
 
+function escapeRegex(text = '') {
+    return text.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&");
+}
 
 module.exports = router;

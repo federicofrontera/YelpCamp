@@ -1,6 +1,8 @@
+
 require('dotenv').config();
 const createError = require('http-errors');
 const express = require('express');
+const app = express();
 const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
@@ -8,10 +10,11 @@ const methodOverride = require('method-override');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const seedDB = require("./seeds");
-const passport = require('passport');
 const LocalStrategy = require('passport-local');
 const User = require('./models/user');
 const flash = require('connect-flash');
+app.locals.moment = require('moment');
+const passport = require('passport');
 
 
 passport.use(new LocalStrategy(User.authenticate()));
@@ -25,7 +28,6 @@ const usersRouter = require('./routes/users');
 const campgroundsRouter = require('./routes/campgrounds');
 const commentsRouter = require('./routes/comments');
 
-const app = express();
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));

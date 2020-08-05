@@ -37,6 +37,10 @@ h1 {
     height: 300px;
 }
 
+.thumbnail .caption{
+    padding: 0;
+}
+
 .index-thumbnail img {
     border: 1px solid #ddd; /* Gray border */
     border-radius: 4px; /* Rounded border */
@@ -72,4 +76,8 @@ h1 {
 .mapboxgl-popup-content {
     text-align: center;
     font-family: 'Open Sans', sans-serif;
+}
+
+.list-group{
+    margin-bottom: 0;
 }
