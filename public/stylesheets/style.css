@@ -1,12 +1,12 @@
 body {
     padding: 0;
     font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+    background-color: #a28089;
 }
 
 a {
     color: #00B7FF;
 }
-
 
 /* Add a hover effect (blue shadow) */
 .index-thumbnail img:hover {
@@ -24,6 +24,13 @@ h1 {
 
 .thumbnail{
     padding: 0px;
+    background-color:  #d0bdf4;
+
+}
+
+.well {
+    background-color: #d0bdf4;
+
 }
 
 .thumbnail img{
@@ -37,8 +44,14 @@ h1 {
     height: 300px;
 }
 
+.thumbnail #campground-caption{
+    padding: 1px 5px;
+
+}
+
 .thumbnail .caption{
     padding: 0;
+    color: #5d4a50;
 }
 
 .index-thumbnail img {
@@ -78,6 +91,10 @@ h1 {
     font-family: 'Open Sans', sans-serif;
 }
 
-.list-group{
-    margin-bottom: 0;
+#search-form{
+    width: 400px;
+}
+
+.navbar {
+    background-color: #486068;
 }

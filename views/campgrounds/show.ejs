@@ -6,13 +6,17 @@
 
         <div class="thumbnail">
             <div id='map'><%= campground.coordinates %></div>
-
             <div class="caption">
-                <div class="list-group">
-                    <li class="list-group-item active">Campground near <%= campground.location %></li>
-                    <li class="list-group-item">Info</li>
-                    <li class="list-group-item">Info</li>
-                </div>
+                Your Campground's approximate location
+            </div>
+
+        </div>
+        <div class="caption">
+
+            <div class="list-group">
+                <li class="list-group-item active">Campground near <%= campground.location %></li>
+                <li class="list-group-item">Info</li>
+                <li class="list-group-item">Info</li>
             </div>
         </div>
 
@@ -21,7 +25,7 @@
     <div class="col-md-9">
         <div class="thumbnail">
             <img class="img-responsive" src="<%= campground.image %>" alt="campground.name">
-            <div class="caption">
+            <div class="caption " id="campground-caption">
                 <h4 class="pull-right">$<%= campground.price %>/night</h4>
                 <h4><a href="">Welcome to <span id="campground-name"><%= campground.name %></span></a></h4>
                 <p>
