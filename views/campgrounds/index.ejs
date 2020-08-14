@@ -1,36 +1,39 @@
 <%- include("../partials/header") %>
-<header class="jumbotron">
-    <div class="container">
-        <h1>Welcome to YelpCamp</h1>
-        <p>View our best campgrounds from all over</p>
-        <p>
-            <a class="btn btn-primary btn-lg" href="/campgrounds/new">Add new Campground</a>
-        </p>
-        <p>
-        <form action="/campgrounds/" method="GET" class="form-inline">
-            <div class="form-group">
-                <input id="search-form" type="text" name="search" placeholder="Search campgrounds by name, location or author" class="form-control">
-                <input type="submit" value="Search" class="btn btn-default">
-            </div>
-        </form>
-        </p>
-    </div>
-</header>
-
-<div class="row text-center" style="display:flex; flex-wrap: wrap;">
-    <% campgrounds.forEach(function (campground) { %>
-        <div class="col-md-3 col-sm-6">
-            <div class="thumbnail index-thumbnail">
-                <img src="<%= campground.image %>" alt="campground.name">
-                <div class="caption">
-                    <h4><%= campground.name %></h4>
-                </div>
-                <p>
-                    <a href="/campgrounds/<%= campground._id %>" class="btn btn-primary">More Info</a>
-                </p>
-            </div>
+<style>
+    body {
+        background-image: url(<%=campgrounds[Math.floor(Math.random() * campgrounds.length)].image%>);
+    }
+</style>
+<div class="jumbotron jumbotron-fluid">
+    <div class="container ">
+        <h1 class="display-4"><span id="welcome-message">Welcome to YelpCamp</span></h1>
+        <div class="d-flex justify-content-center">
+            <p><a class="btn btn-primary btn-lg " href="/campgrounds/new">Add new Campground</a></p>
         </div>
-    <% }) %>
+    </div>
 </div>
 
-<%- include("../partials/footer") %>
+    <div class="row text-center">
+        <% campgrounds.forEach(function (campground) { %>
+            <div class="col-md-3 col-sm-6 mb-4">
+                <div class="card index-thumbnail">
+                    <img class="card-img-top" src="<%= campground.image %>" alt="<%= campground.name %>">
+                    <div class="card-body">
+                        <h5 class="card-title"><%= campground.name %></h5>
+                        <a href="/campgrounds/<%= campground._id %>" class="btn btn-primary">More Info</a>
+                    </div>
+                </div>
+            </div>
+        <% }) %>
+    </div>
+
+<!--<script>
+    $(function () {
+        $(document).scroll(function () {
+            var $nav = $("#mainNavbar");
+            $nav.toggleClass("scrolled", $(this).scrollTop() > $nav.height());
+        });
+    });
+</script>-->
+
+    <%- include("../partials/footer") %>

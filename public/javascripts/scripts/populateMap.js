@@ -2,11 +2,13 @@ const coordinates = document.querySelector('#map').textContent.split(',');
 const name = document.querySelector('#campground-name').textContent;
 
 
+//public key
 mapboxgl.accessToken = 'pk.eyJ1Ijoib2tvbmRvciIsImEiOiJja2RnMmhrYmcyZHc4MnFwbTI5OXljdzBsIn0.FvyZoJXrxisObGhcQYpg6A';
 
-var map = new mapboxgl.Map({
+
+const map = new mapboxgl.Map({
     container: 'map',
-    style: 'mapbox://styles/mapbox/light-v10',
+    style: 'mapbox://styles/mapbox/streets-v10',
     center:  coordinates,
     zoom: 10
 });
@@ -14,7 +16,7 @@ var map = new mapboxgl.Map({
 // add markers to map
 
 // create a HTML element for each feature
-var el = document.createElement('div');
+const el = document.createElement('div');
 el.className = 'marker';
 
 // make a marker for each feature and add to the map
@@ -23,3 +25,4 @@ new mapboxgl.Marker(el)
     .setPopup(new mapboxgl.Popup({ offset: 25 }) // add popups
         .setHTML('<h3>' + name + '</h3><p>' + coordinates + '</p>'))
     .addTo(map);
+
