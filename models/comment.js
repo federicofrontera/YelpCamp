@@ -7,10 +7,10 @@ const commentSchema = new mongoose.Schema({
     author: {
         _id: {
             type: mongoose.Schema.Types.ObjectID,
-            ref: "User"
+            ref: 'User'
         },
         username: String
     }
 });
 
-module.exports = mongoose.model("Comment", commentSchema);
+module.exports = mongoose.model('Comment', commentSchema);

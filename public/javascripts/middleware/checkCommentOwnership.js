@@ -7,14 +7,14 @@ module.exports = function checkCampgroundOwnership(req, res, next) {
                 req.flash('error', 'Comment not found');
                 res.redirect('back');
             } else if (comment.author._id.equals(req.user._id)) {
-                next()
+                next();
             } else {
                 req.flash('error', 'Permission denied');
                 res.redirect('back');
             }
-        })
+        });
     } else {
         req.flash('error', 'Must be logged in to perform that action');
         res.redirect('/users/login');
     }
-}
+};

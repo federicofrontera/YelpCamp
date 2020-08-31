@@ -14,16 +14,16 @@ router.get('/new', isLoggedIn, function (req, res) {
         } else {
             res.render('comments/new', {title: 'New Comment', campground: campground});
         }
-    })
+    });
 });
 
 /* POST NEW COMMENT */
-router.post("/", isLoggedIn, function (req, res) {
+router.post('/', isLoggedIn, function (req, res) {
     //lookup campground using ID
     Campground.findById(req.params.id, function (err, campground) {
         if (err || !campground) {
-            req.flash('error', 'Campground not found')
-            res.redirect("/campgrounds");
+            req.flash('error', 'Campground not found');
+            res.redirect('/campgrounds');
         } else {
             Comment.create(req.body.comment, function (err, comment) {
                 if (err) {
@@ -33,7 +33,7 @@ router.post("/", isLoggedIn, function (req, res) {
                     comment.save();
                     campground.comments.push(comment);
                     campground.save();
-                    req.flash('success', 'New comment added')
+                    req.flash('success', 'New comment added');
                     res.redirect('/campgrounds/' + campground._id);
                 }
             });
@@ -50,20 +50,20 @@ router.get('/:comment_id/edit', checkCommentOwnership, function (req, res) {
         } else {
             res.render('comments/edit', {campground_id: req.params.id, comment: foundComment});
         }
-    })
-})
+    });
+});
 
 /*UPDATE comment route*/
 router.put('/:comment_id', checkCommentOwnership, function (req, res) {
-    Comment.findByIdAndUpdate(req.params.comment_id, req.body.comment, function (err, updatedComment) {
+    Comment.findByIdAndUpdate(req.params.comment_id, req.body.comment, function (err) {
         if (err) {
             console.log(err);
             res.redirect('back');
         } else {
             res.redirect('/campgrounds/' + req.params.id);
         }
-    })
-})
+    });
+});
 
 /*DESTROY comment route*/
 router.delete('/:comment_id', checkCommentOwnership, function (req, res) {
@@ -76,6 +76,6 @@ router.delete('/:comment_id', checkCommentOwnership, function (req, res) {
         }
 
     });
-})
+});
 
 module.exports = router;

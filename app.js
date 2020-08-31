@@ -9,7 +9,7 @@ const logger = require('morgan');
 const methodOverride = require('method-override');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
-const seedDB = require("./seeds");
+const seedDB = require('./seeds');
 const LocalStrategy = require('passport-local');
 const User = require('./models/user');
 const flash = require('connect-flash');
@@ -41,17 +41,17 @@ app.use(express.urlencoded({extended: true}));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, '/public')));
 app.use(bodyParser.urlencoded({extended: true}));
-app.use(methodOverride("_method"));
+app.use(methodOverride('_method'));
 app.use(flash());
 
 
 
 //auth configuration
 app.use(require('express-session')({
-    secret: "michi y freya best cats LAS",
+    secret: 'michi y freya best cats LAS',
     resave: false,
     saveUninitialized: false
-}))
+}));
 app.use(passport.initialize());
 app.use(passport.session());
 
@@ -79,7 +79,7 @@ app.use(function (req, res, next) {
 });
 
 // error handler
-app.use(function (err, req, res, next) {
+app.use(function (err, req, res) {
     // set locals, only providing error in development
     res.locals.message = err.message;
     res.locals.error = req.app.get('env') === 'development' ? err : {};

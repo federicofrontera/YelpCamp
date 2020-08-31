@@ -2,46 +2,47 @@ const express = require('express');
 const router = express.Router();
 const Campground = require('../models/campground');
 const isLoggedIn = require('../public/javascripts/middleware/isLoggedIn');
-const geocoder = require('../public/javascripts/middleware/geocoder')
+const geocoder = require('../public/javascripts/middleware/geocoder');
 const checkCampgroundOwnership = require('../public/javascripts/middleware/checkCampgroundOwnership');
 
 
+
 /* INDEX - show all campgrounds. */
-router.get('/', function (req, res, next) {
+router.get('/', function (req, res) {
     const regex = new RegExp(escapeRegex(req.query.search), 'gi');
     Campground.find({
         $or: [
             {name: regex},
             {location: regex},
-            {"author.username": regex}
+            {'author.username': regex}
         ]
     }, function (err, campgrounds) {
         if (err || !campgrounds.length) {
             req.flash('error', 'No matches for your search, please try again.');
-            res.redirect("back");
+            res.redirect('back');
         } else {
             res.render('campgrounds/index', {
                 page: 'campgrounds',
                 campgrounds: campgrounds
-            })
+            });
         }
 
     });
 });
 
 /* CREATE - new campground . */
-router.post('/', [isLoggedIn, geocoder.forward], function (req, res, next) {
+router.post('/', [isLoggedIn, geocoder.forward], function (req, res) {
     let author = {
         _id: req.user._id,
         username: req.user.username
-    }
+    };
     let newCampground = req.body.campground;
     newCampground.author = author;
     Campground.create(newCampground, function (err, savedCampground) {
         if (err) {
             console.log(err);
         } else {
-            console.log(savedCampground)
+            console.log(savedCampground);
             res.redirect('/campgrounds/' + savedCampground._id);
         }
     });
@@ -49,21 +50,21 @@ router.post('/', [isLoggedIn, geocoder.forward], function (req, res, next) {
 
 
 /* NEW - show new campground form. */
-router.get('/new', isLoggedIn, function (req, res, next) {
+router.get('/new', isLoggedIn, function (req, res) {
     res.render('campgrounds/new');
 });
 
 /* SHOW campground route */
 router.get('/:id', function (req, res) {
-    Campground.findById(req.params.id).populate("comments").exec(function (err, campground) {
+    Campground.findById(req.params.id).populate('comments').exec(function (err, campground) {
         if (err) {
             console.log(err);
             res.redirect('back');
         } else {
             res.render('campgrounds/show', {campground: campground});
         }
-    })
-})
+    });
+});
 
 
 /*EDIT campground form route*/
@@ -73,9 +74,9 @@ router.get('/:id/edit', checkCampgroundOwnership, function (req, res) {
             console.log(err);
             res.redirect('/campgrounds');
         } else {
-            res.render('campgrounds/edit', {title: campground.name + " edit", campground: campground});
+            res.render('campgrounds/edit', {title: campground.name + ' edit', campground: campground});
         }
-    })
+    });
 });
 
 
@@ -89,8 +90,8 @@ router.put('/:id', [checkCampgroundOwnership, geocoder.forward], function (req, 
         } else {
             res.redirect('/campgrounds/' + req.params.id);
         }
-    })
-})
+    });
+});
 
 /*DESTROY campground route*/
 router.delete('/:id', checkCampgroundOwnership, function (req, res) {
@@ -101,12 +102,12 @@ router.delete('/:id', checkCampgroundOwnership, function (req, res) {
             } else {
                 res.redirect('/campgrounds');
             }
-        })
+        });
     });
-})
+});
 
 function escapeRegex(text = '') {
-    return text.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&");
+    return text.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, '\\$&');
 }
 
 module.exports = router;

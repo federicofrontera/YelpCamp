@@ -14,14 +14,14 @@ const campgroundSchema = new mongoose.Schema({
     author: {
         _id: {
             type: mongoose.Schema.Types.ObjectID,
-            ref: "User"
+            ref: 'User'
         },
         username: String
     },
     comments: [
         {
             type: mongoose.Schema.Types.ObjectID,
-            ref: "Comment"
+            ref: 'Comment'
         }
     ]
 });
@@ -39,4 +39,4 @@ campgroundSchema.pre('remove', async function (next) {
         return next(err);
     }
 });
-module.exports = mongoose.model("Campground", campgroundSchema);
+module.exports = mongoose.model('Campground', campgroundSchema);

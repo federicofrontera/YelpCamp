@@ -15,11 +15,12 @@ module.exports = {
                 req.body.campground.coordinates = match.features[0].geometry.coordinates;
                 next();
             })
+            // eslint-disable-next-line no-unused-vars
             .catch(error => {
                 req.body.campground.coordinates = [-96, 37.8];
-                req.flash('error', "Location not found, coordinates set to: " + req.body.campground.coordinates);
+                req.flash('error', 'Location not found, coordinates set to: ' + req.body.campground.coordinates);
                 next();
-            });;
+            });
     }
-}
+};
 
