@@ -10,10 +10,7 @@
             <div class="form-group">
                 <input class="form-control" type="text" name="campground[name]" placeholder="Campground name" required>
             </div>
-            <div class="form-group">
-                <input class="form-control" type="text" name="campground[location]"
-                       placeholder="Fill this to geolocate your campground" required>
-            </div>
+
             <div class="form-group">
                 <select class="form-control" name="campground[country]">
                     <option value="AF">Afghanistan</option>
@@ -266,6 +263,10 @@
                     <option value="ZM">Zambia</option>
                     <option value="ZW">Zimbabwe</option>
                 </select>
+            </div>
+            <div class="form-group">
+                <input class="form-control" type="text" name="campground[location]"
+                       placeholder="Add closest city, town or point of interest for better geolocation" required>
             </div>
             <div class="form-group">
                 <div class="input-group">
